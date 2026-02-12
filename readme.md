@@ -1,6 +1,6 @@
 # IA-restful-AI-Project
 
-A full-stack AI web application that integrates a RESTful API with a Hugging Face language model deployed on DigitalOcean, utilizing Supabase for backend services. The application is live at [elegant-faun-14186b.netlify.app](https://elegant-faun-14186b.netlify.app/).
+A full-stack AI web application that integrates a RESTful API with a Hugging Face language model deployed on DigitalOcean, utilizing Supabase for backend services. The application is live at [elegant-faun-14186b.netlify.app](https://generate-lyrics.netlify.app/).
 
 ## Features
 
@@ -12,7 +12,7 @@ A full-stack AI web application that integrates a RESTful API with a Hugging Fac
 
 ## Live Demo
 
-Access the live application here: [elegant-faun-14186b.netlify.app](https://elegant-faun-14186b.netlify.app/)
+Access the live application here: [elegant-faun-14186b.netlify.app](https://generate-lyrics.netlify.app/)
 
 ## Getting Started
 
