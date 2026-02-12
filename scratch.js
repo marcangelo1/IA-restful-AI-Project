@@ -1,7 +1,7 @@
 const API_URL = (() => {
     if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
         return "http://localhost:3000/api/v1";
-    } else if (window.location.hostname === "elegant-faun-14186b.netlify.app") {
+    } else if (window.location.hostname === "generate-lyrics.netlify.app") {
         return "https://lyrics-generator-backend.onrender.com/api/v1";
     } else {
         return "https://lyrics-generator-backend.onrender.com/api/v1";
@@ -442,3 +442,4 @@ async function handleSignup() {
         }
         showNotification(frontendMessages.errors.networkError, "error");
     }
+}
