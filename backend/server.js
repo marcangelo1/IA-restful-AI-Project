@@ -31,7 +31,7 @@ const app = express();
 app.use(
     cors({
         origin: [
-            "https://elegant-faun-14186b.netlify.app",
+            "https://generate-lyrics.netlify.app/",
             "https://lyrics-generator-backend.onrender.com",
             "http://localhost:5500",
             "http://127.0.0.1:5500",
