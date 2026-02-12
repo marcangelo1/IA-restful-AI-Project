@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
             return "http://localhost:3000/api/v1";
         } else if (window.location.hostname === "elegant-faun-14186b.netlify.app") {
-            return "https://lyrics-generator-backend-883px.ondigitalocean.app/api/v1";
+            return "https://lyrics-generator-backend.onrender.com/api/v1";
         } else {
-            return "https://lyrics-generator-backend-883px.ondigitalocean.app/api/v1";
+            return "https://lyrics-generator-backend.onrender.com/api/v1";
         }
     })();
 
