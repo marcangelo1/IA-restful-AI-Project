@@ -25,7 +25,7 @@ ${max_length ? `Approximate length: ${max_length} words.` : ""}`;
                 Authorization: `Bearer ${process.env.HF_API_TOKEN}`,
             },
             body: JSON.stringify({
-                model: "mistralai/Mistral-7B-Instruct-v0.3:hf-inference",
+                model: "Qwen/Qwen2.5-7B-Instruct",
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userPrompt },
