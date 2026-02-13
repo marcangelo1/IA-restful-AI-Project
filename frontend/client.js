@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const data = await response.json();
 
-            if (data && data.lyrics) {
-                lyricsOutput.textContent = data.lyrics;
+            if (data && data.generated_lyrics) {
+                lyricsOutput.textContent = data.generated_lyrics;
                 statusBadge.textContent = frontendMessages.dashboard.statusSuccess;
                 statusBadge.className = "badge bg-success";
 
