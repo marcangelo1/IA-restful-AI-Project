@@ -13,7 +13,7 @@ exports.generateLyrics = async (req, res) => {
 
         // Call Hugging Face Inference API
         const response = await fetch(
-            "https://api-inference.huggingface.co/models/openai-community/gpt2",
+            "https://router.huggingface.co/models/openai-community/gpt2",
             {
                 method: "POST",
                 headers: {
