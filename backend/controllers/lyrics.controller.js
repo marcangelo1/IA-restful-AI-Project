@@ -3,29 +3,58 @@ const messages = require("../messages");
 
 exports.generateLyrics = async (req, res) => {
     try {
-        const requestBody = {
-            artist: req.body.artist,
-            description: req.body.description,
-            max_length: req.body.max_length,
-            temperature: req.body.temperature,
-            top_p: req.body.top_p,
-            top_k: req.body.top_k,
-            complete_song: req.body.complete_song,
-        };
+        const { artist, description, max_length = 100, temperature = 0.9, top_p = 0.95, top_k = 50 } = req.body;
+        
+        // Create the prompt for lyrics generation
+        const prompt = `Write a song in the style of ${artist} about ${description}:\n\nVerse 1:\n`;
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 50000);
+        const timeout = setTimeout(() => controller.abort(), 30000);
 
-        const response = await fetch("http://146.190.124.66:8000/generate-pop-lyrics", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody),
-            signal: controller.signal,
-        });
+        // Call Hugging Face Inference API
+        const response = await fetch(
+            "https://api-inference.huggingface.co/models/gpt2",
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        max_new_tokens: max_length,
+                        temperature: temperature,
+                        top_p: top_p,
+                        top_k: top_k,
+                        return_full_text: false,
+                    },
+                }),
+                signal: controller.signal,
+            }
+        );
         clearTimeout(timeout);
 
-        const data = await response.json();
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Hugging Face API error:", response.status, errorText);
+            throw new Error(`Hugging Face API error: ${response.status} - ${errorText}`);
+        }
 
+        const data = await response.json();
+        
+        // Extract the generated text from the response
+        let generatedLyrics = "";
+        if (Array.isArray(data) && data.length > 0) {
+            generatedLyrics = data[0].generated_text || "";
+        } else if (data.generated_text) {
+            generatedLyrics = data.generated_text;
+        } else {
+            console.error("Unexpected response format:", data);
+            generatedLyrics = "Error: Unexpected response format from AI model";
+        }
+
+        // Update API usage count
         let { data: usageRow } = await supabase.from("api_usage").select("*").eq("user_id", req.user.userId).maybeSingle();
 
         if (!usageRow) {
@@ -40,7 +69,7 @@ exports.generateLyrics = async (req, res) => {
         const hasReachedLimit = usageRow.api_calls_count >= 20;
 
         res.json({
-            ...data,
+            lyrics: generatedLyrics,
             apiCallsCount: usageRow.api_calls_count,
             limitReached: hasReachedLimit,
             limitMessage: hasReachedLimit ? messages.api.apiLimitReached : null,
